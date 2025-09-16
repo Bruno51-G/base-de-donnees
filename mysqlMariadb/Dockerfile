@@ -23,3 +23,5 @@ RUN apt-get update
 # -y accepter automatiquement l'installation
 # --fix-missing permet de corriger les dépendances manquantes dans un projet, généralement en réinstallant ou synchronisant les paquets manquants dans le dossier
 RUN apt-get install -y --fix-missing openssh-client openssh-server
+
+
