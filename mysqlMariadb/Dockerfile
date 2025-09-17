@@ -15,6 +15,8 @@ ENV MYSQL_USER=bruno
 # Mot de passe pour se connecter à la base de données
 ENV MYSQL_PASSWORD=12345
 
+VOLUME /data_test
+
 # CMD...
 # Mets à jour la liste des paquets disponibles / Mets à jour la liste des logiciels du conteneur
 RUN apt-get update
