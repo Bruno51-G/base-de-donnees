@@ -49,29 +49,59 @@ FROM emp WHERE JOB='SALESMAN';
 
 
 /* 12. Liste des employés du département 20: nom, job, date d'embauche sous forme VEN 28 FEV 1997'. */
-
+SET lc_time_names = 'fr_FR'; /* Permet de mettre le format date en français*/
+SELECT ENAME AS Nom_employés, JOB AS poste, DATE_FORMAT (HIREDATE, '%a %d %b %Y') AS date_embauche /*noms complet : '%W %d %M %Y'*/
+FROM emp WHERE DEPTNO=20;
 
 
 /* 13. Donner le salaire le plus élevé par département. */
+SELECT DNAME AS Département, MAX(SAL) AS salaire_max
+FROM emp RIGHT JOIN dept ON emp.DEPTNO = dept.DEPTNO
+GROUP BY DNAME;
 
 
 /* 14. Donner département par département masse salariale, nombre d'employés, salaire moyen par type d'emploi. */
+SELECT DNAME AS Departement, COUNT(EMPNO) AS Nombre_employes, SUM(SAL) AS Masse_salariale, JOB AS Emploi, AVG(SAL) AS Salaire_moyen 
+FROM dept LEFT JOIN emp ON dept.DEPTNO = emp.DEPTNO
+GROUP BY DNAME
+ORDER BY DNAME, JOB ASC;
 
 
 /* 15. Même question mais on se limite aux sous-ensembles d'au moins 2 employés. */
+SELECT DNAME AS Departement, COUNT(EMPNO) AS Nombre_employes, SUM(SAL) AS Masse_salariale, JOB AS Emploi, AVG(SAL) AS Salaire_moyen 
+FROM dept INNER  JOIN emp ON dept.DEPTNO = emp.DEPTNO
+WHERE EMPNO>2
+GROUP BY DNAME;
 
 
 /* 16. Liste des employés (Nom, département, salaire) de même emploi que JONES. */
+SELECT ENAME AS Nom_employes, DNAME AS Département, SAL AS Salaire
+FROM emp INNER JOIN dept ON emp.DEPTNO = dept.DEPTNO
+WHERE JOB = (SELECT JOB FROM emp WHERE ENAME = 'JONES');
 
 
 /* 17. Liste des employés (nom, salaire) dont le salaire est supérieur à la moyenne globale des salaires. */
+SELECT ENAME AS Nom_employes, SAL AS Salaire
+FROM emp
+WHERE SAL > (SELECT AVG(SAL) FROM emp);
 
 
 /* 18. Création d'une table PROJET avec comme colonnes numéro de projet (3 chiffres), nom de projet(5 caractères), budget. Entrez les valeurs suivantes:
 	101, ALPHA, 96000
 	102, BETA, 82000
 	103, GAMMA, 15000 */
-	
+CREATE TABLE projet(
+NUM_PROJET INT(3) NOT NULL,
+NOM_PROJET VARCHAR(5) NOT NULL,
+BUDJET DECIMAL(8,2) NOT NULL,
+PRIMARY KEY (NUM_PROJET)
+) ENGINE=INNODB DEFAULT CHARSET=utf8; 
+
+INSERT INTO projet (NUM_PROJET, NOM_PROJET, BUDJET) VALUES
+(101, 'ALPHA', 96000),
+(102, 'BETA', 82000),
+(103, 'GAMMA', 15000);
+
 
 /* 19. Ajouter l'attribut numéro de projet à la table EMP et affecter tous les vendeurs du département 30 au projet 101, et les autres au projet 102. */
 
