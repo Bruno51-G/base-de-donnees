@@ -104,6 +104,23 @@ INSERT INTO projet (NUM_PROJET, NOM_PROJET, BUDJET) VALUES
 
 
 /* 19. Ajouter l'attribut numéro de projet à la table EMP et affecter tous les vendeurs du département 30 au projet 101, et les autres au projet 102. */
+ALTER TABLE emp
+DROP COLUMN NUM_PROJET;
+
+ALTER TABLE emp
+ADD COLUMN NUM_PROJET INT UNSIGNED NOT NULL;
+
+UPDATE emp
+SET NUM_PROJET = 101
+WHERE JOB = 'SALESMAN' AND DEPTNO = 30;
+
+UPDATE emp
+SET NUM_PROJET = 102
+WHERE JOB != 'SALESMAN';
+
+ALTER TABLE emp
+ADD CONSTRAINT FK_NUM_PROJET FOREIGN KEY (NUM_PROJET) REFERENCES projet(NUM_PROJET);
+
 
 
 /* 20. Créer une vue comportant tous les employés avec nom, job, nom de département et nom de projet. */
