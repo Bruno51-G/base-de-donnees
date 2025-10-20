@@ -1,33 +1,55 @@
 /* PARTIE 2 */
 /* 1. Afficher la liste des managers des départements 20 et 30 */
-
+SELECT ENAME, JOB, DEPTNO
+FROM emp
+WHERE JOB = 'MANAGER'AND DEPTNO IN (20, 30);
 
 /* 2. Afficher la liste des employés qui ne sont pas manager et qui ont été embauchés en 81 */
-
+SELECT ENAME, JOB, HIREDATE
+FROM emp
+WHERE JOB != 'MANAGER' AND YEAR (HIREDATE) = 1981;
 
 /* 3. Afficher la liste des employés ayant une commission */
+SELECT ENAME, COMM
+FROM emp
+WHERE COMM != 0;
 
 
 /* 4. Afficher la liste des noms, numéros de département, jobs et date d'embauche triés par Numero de Département et JOB les derniers embauches d'abord. */
+SELECT ENAME AS Nom, DEPTNO AS Numero_département, JOB AS poste, HIREDATE AS Date_embauche
+FROM emp
+ORDER BY DEPTNO ASC, JOB ASC, HIREDATE DESC;
 
 
 /* 5. Afficher la liste des employés travaillant à DALLAS */
+SELECT ENAME AS Nom, dept.LOC
+FROM emp INNER JOIN dept ON emp.DEPTNO = dept.DEPTNO
+WHERE dept.LOC = 'DALLAS';
 
 
 /* 6. Afficher les noms et dates d'embauche des employés embauchés avant leur manager, avec le nom et date d'embauche du manager. */
+SELECT e1.ENAME AS Nom_employé, e1.JOB AS poste, e1.HIREDATE AS Date_embauche_employé, e2.ENAME AS Nom_manager, e2.HIREDATE AS Date_embauche_manager 
+FROM emp e1, emp e2
+WHERE e1.JOB !='MANAGER' AND e1.MGR = e2.EMPNO AND e1.HIREDATE < e2.HIREDATE;
 
 
 /* 7. Lister les numéros des employés n'ayant pas de subordonné. */
+SELECT EMPNO, ENAME 
+FROM emp WHERE EMPNO NOT IN 
+(SELECT DISTINCT MGR FROM emp WHERE MGR IS NOT NULL);
 
 
 /* 8. Afficher les noms et dates d'embauche des employés embauchés avant BLAKE. */
-
+SELECT ENAME, HIREDATE,(SELECT HIREDATE FROM emp WHERE ENAME='BLAKE') AS "Date embauche de BLAKE" 
+FROM emp WHERE HIREDATE < (SELECT HIREDATE FROM emp WHERE ENAME='BLAKE');
 
 /* 9. Afficher les employés embauchés le même jour que FORD. */
-
+SELECT ENAME, HIREDATE, (SELECT HIREDATE FROM emp WHERE ENAME='FORD') AS "Date embauche de FORD"
+FROM emp WHERE HIREDATE = (SELECT HIREDATE FROM emp WHERE ENAME='FORD');
 
 /* 10. Lister les employés ayant le même manager que CLARK. */
-
+SELECT ENAME AS Nom, EMPNO AS "Numéro employé", (SELECT ENAME AS "Nom", JOB, MGR FROM emp WHERE ENAME = 'CLARK') AS "Manager de CLARK"
+FROM emp WHERE MGR = (SELECT MGR FROM emp WHERE ENAME = 'CLARK');
 
 /* 11. Lister les employés ayant même job et même manager que TURNER. */
 
