@@ -91,11 +91,13 @@ WHERE SAL > (SELECT AVG(SAL) FROM emp);
 	102, BETA, 82000
 	103, GAMMA, 15000 */
 CREATE TABLE projet(
-NUM_PROJET INT(3) NOT NULL,
+NUM_PROJET INT(3) UNSIGNED NOT NULL,
 NOM_PROJET VARCHAR(5) NOT NULL,
-BUDJET DECIMAL(8,2) NOT NULL,
-PRIMARY KEY (NUM_PROJET)
-) ENGINE=INNODB DEFAULT CHARSET=utf8; 
+BUDJET DECIMAL(8,2) NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=UTF8; 
+
+ALTER TABLE projet
+ADD PRIMARY KEY (NUM_PROJET);
 
 INSERT INTO projet (NUM_PROJET, NOM_PROJET, BUDJET) VALUES
 (101, 'ALPHA', 96000),
@@ -119,16 +121,27 @@ SET NUM_PROJET = 102
 WHERE JOB != 'SALESMAN';
 
 ALTER TABLE emp
-ADD CONSTRAINT FK_NUM_PROJET FOREIGN KEY (NUM_PROJET) REFERENCES projet(NUM_PROJET);
+ADD CONSTRAINT FK_numProjet FOREIGN KEY(NUM_PROJET) REFERENCES projet(NUM_PROJET);
 
 
 
 /* 20. Créer une vue comportant tous les employés avec nom, job, nom de département et nom de projet. */
+SELECT ENAME, JOB, dept.DNAME, projet.NOM_PROJET
+FROM emp
+INNER JOIN dept ON emp.DEPTNO = dept.DEPTNO
+INNER JOIN projet ON emp.NUM_PROJET = projet.NUM_PROJET;
 
 
 /* 21. A l'aide de la vue créée précédemment, lister tous les employés avec nom, job, nom de département 
 	et nom de projet triés sur nom de département et nom de projet. */
-	
+SELECT ENAME, JOB, dept.DNAME, projet.NOM_PROJET
+FROM emp
+INNER JOIN dept ON emp.DEPTNO = dept.DEPTNO
+INNER JOIN projet ON emp.NUM_PROJET = projet.NUM_PROJET
+ORDER BY dept.DNAME, projet.NUM_PROJET ASC;
+
 	
 /* 22. Donner le nom du projet associé à chaque manager. */
-
+SELECT ENAME, projet.NOM_PROJET
+FROM emp INNER JOIN projet ON emp.NUM_PROJET = projet.NUM_PROJET
+WHERE JOB = 'MANAGER';
