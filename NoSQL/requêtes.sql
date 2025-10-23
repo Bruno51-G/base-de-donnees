@@ -8,21 +8,26 @@ db.employes.find(
 
 /* 2. Donner nom, job et salaire des employés de type MANAGER dont le salaire est supérieur à 2800. */
 db.employers.find(
-  { job: "MANAGER", sal: { $gt: 2800 } }, { ename: 1, job: 1, sal: 1, _id: 0 }
+  { job: "MANAGER", sal: { $gt: 2800 } }, 
+  { ename: 1, job: 1, sal: 1, _id: 0 }
 )
 
 /* 3. Donner la liste des MANAGER n'appartenant pas au département 30. */
 db.employes.find(
-    {job: "MANAGER", deptno: {$ne: 30}}, {ename: 1, job: 1, deptno: 1, _id: 0}
+    {job: "MANAGER", deptno: {$ne: 30}}, 
+    {ename: 1, job: 1, deptno: 1, _id: 0}
 )
 
 /* 4. Liste des employés de salaire compris entre 1200 et 1400. */
 db.employes.find(
-    {sal: {$gte: 1200, $lte: 1400}}, {ename: 1, job: 1, sal: 1, _id: 0}
+    {sal: {$gte: 1200, $lte: 1400}}, 
+    {ename: 1, job: 1, sal: 1, _id: 0}
 )
 
 /* 5. Liste des employés des départements 10 et 30 classés dans l'ordre alphabétique. */
-
+db.employes.find({deptno: {$in: [10, 30]}})
+          .sort({ename: 1})
+          
 
 /* 6. Liste des employés du département 30 classés dans l'ordre des salaires croissants. */
 
