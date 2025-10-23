@@ -27,9 +27,11 @@ db.employes.find(
 /* 5. Liste des employés des départements 10 et 30 classés dans l'ordre alphabétique. */
 db.employes.find({deptno: {$in: [10, 30]}})
           .sort({ename: 1})
-          
+
 
 /* 6. Liste des employés du département 30 classés dans l'ordre des salaires croissants. */
+db.employes.find({deptno: 30})
+          .sort({sal: 1})
 
 
 /* 7. Liste de tous les employés classés par emploi et salaires décroissants. */
