@@ -1,0 +1,11 @@
+services:
+  cache:
+    image: memcached:1.6.39
+  mail:
+    image: axllent/mailpit:v1.27
+  api:
+    build:
+      context: ./api
+  front:
+    build:
+      context: ./front

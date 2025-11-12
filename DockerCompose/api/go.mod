@@ -1,0 +1,5 @@
+module org.lupusmic.master-ring.api
+
+go 1.25.4
+
+require github.com/bradfitz/gomemcache v0.0.0-20250403215159-8d39553ac7cf // indirect
